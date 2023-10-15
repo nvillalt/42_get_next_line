@@ -6,7 +6,7 @@
 /*   By: nvillalt <nvillalt@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 10:21:40 by nvillalt          #+#    #+#             */
-/*   Updated: 2023/10/14 15:01:44 by nvillalt         ###   ########.fr       */
+/*   Updated: 2023/10/15 16:57:08 by nvillalt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #	include <limits.h>
 
 char	*get_next_line(int fd);
+char	*ft_strdup(char *src);
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_substr_mod(char *str, char c);
 void	*ft_calloc(size_t count, size_t size);
