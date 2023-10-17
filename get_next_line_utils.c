@@ -54,7 +54,7 @@ void	*ft_calloc(size_t count, size_t size)
 	size_t	i;
 	
 	if (count >= __SIZE_MAX__ || size >= __SIZE_MAX__)
-		return (0); // Checar esta condicion con mi otra función
+		return (0);
 	tmp = malloc(count * size);
 	if (!tmp)
 		return (0);
@@ -63,7 +63,7 @@ void	*ft_calloc(size_t count, size_t size)
 		tmp[i] = 0;
 		i++;
 	}
-	return ((void *)tmp); // Si da error esto, convertir a char *
+	return ((void *)tmp);
 }
 char	*ft_strchr(char *str, int c)
 {
@@ -78,8 +78,29 @@ char	*ft_strchr(char *str, int c)
 			return ((char *)copy + i);
 		i++;
 	}
-	if (copy[i] == (unsigned char)c) // Quizás esta condición de problemas, veremos
+	if (copy[i] == (unsigned char)c) // Condicion que a lo mejor hay que quitar luego
 		return ((char *)copy + i);
 	else
 		return (0);
+}
+
+char	*ft_substr_mod(char *s, int c)
+{
+	char	*substr;
+	int		len;
+	int		i;
+
+	len = 0;
+	i = 0;
+	while (s[len] != 0 && s[len] != c)
+		len++;
+	substr = ft_calloc(sizeof(char), len + 1);
+	if (!substr)
+		return (NULL);
+	while (i < len)
+	{
+		substr[i] = s[i];
+		i++;
+	}
+	return (substr);
 }

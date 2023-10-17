@@ -18,11 +18,16 @@ int main()
 {
     int     fd;
     char    *final;
+    int     i;
 
+    i = 0;
     fd = open("ejemplo.txt", O_RDONLY);
     printf("File Descriptor: %d\n", fd);
-    final = get_next_line(fd);
-    
-    printf("%s\n", final);
+    while (i++ < 20)
+    {
+        final = get_next_line(fd);
+        printf("%s", final);
+        free(final);    
+    } 
     return (0);
 }

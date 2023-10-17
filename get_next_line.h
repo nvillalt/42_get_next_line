@@ -14,7 +14,7 @@
 #	define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 5
+#  define BUFFER_SIZE 6
 # endif
 
 #	include <unistd.h>
@@ -28,6 +28,7 @@ char	*get_next_line(int fd);
 // Auxiliary functions
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_strchr(char *str, int c);
+char	*ft_substr_mod(char *s, int c);
 void	*ft_calloc(size_t count, size_t size);
 size_t	ft_strlen(char *str);
 
