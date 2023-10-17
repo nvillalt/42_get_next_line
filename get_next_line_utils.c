@@ -6,30 +6,11 @@
 /*   By: nvillalt <nvillalt@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 10:27:51 by nvillalt          #+#    #+#             */
-/*   Updated: 2023/10/15 17:35:25 by nvillalt         ###   ########.fr       */
+/*   Updated: 2023/10/17 13:02:08 by nvillalt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-char	*ft_strdup(char *src)
-{
-	char	*s;
-	size_t	len;
-	size_t	i;
-
-	i = 0;
-	len = ft_strlen(src);
-	s = ft_calloc(sizeof(char), len + 1);
-	if (!s)
-		return (0);
-	while (src[i] != '\0')
-	{
-		s[i] = (char)src[i];
-		i++;
-	}
-	return (s);
-}
 
 size_t	ft_strlen(char *str)
 {
@@ -84,30 +65,21 @@ void	*ft_calloc(size_t count, size_t size)
 	}
 	return ((void *)tmp); // Si da error esto, convertir a char *
 }
-char	*ft_substr_mod(char *str, char c)
+char	*ft_strchr(char *str, int c)
 {
-	char	*substr;
-	size_t	i;
-    size_t  len;
-	size_t	total_len;
+	int				i;
+	unsigned char	*copy;
 
 	i = 0;
-    len = 0;
-	total_len = ft_strlen(str);
-    while (len < total_len)
-    {
-        if (str[len] == c)
-            break ;
-        len++;
-    }
-	substr = ft_calloc(sizeof(char), len + 1);
-	if (!substr)
-		return (NULL);
-    i = 0;
-	while (i < len)
+	copy = (unsigned char *)str;
+	while (copy[i] != '\0')
 	{
-		substr[i] = str[i];
+		if (copy[i] == (unsigned char)c)
+			return ((char *)copy + i);
 		i++;
 	}
-	return (substr);
+	if (copy[i] == (unsigned char)c) // Quizás esta condición de problemas, veremos
+		return ((char *)copy + i);
+	else
+		return (0);
 }

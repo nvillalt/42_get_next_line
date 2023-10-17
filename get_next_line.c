@@ -6,68 +6,52 @@
 /*   By: nvillalt <nvillalt@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 10:32:55 by nvillalt          #+#    #+#             */
-/*   Updated: 2023/10/15 17:41:53 by nvillalt         ###   ########.fr       */
+/*   Updated: 2023/10/17 13:16:17 by nvillalt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <stdio.h>
 
-/* Función check string lo que hace es ver si 
-dentro de lo leído por el buffer hay algun \n o 
-\0. Si lo hay, devuelve 1, si no, devuelve 0 */
-
-int	check_string(char *buffer, char c)
+char	*read_fd(int fd, char *buffer, char *saved)
 {
-	size_t	i;
-
-	i = 0;
-	while (buffer[i] != '\0')
+	ssize_t	read_chars;
+	int		i;
+	
+	buffer = ft_calloc(sizeof(char), BUFFER_SIZE + 1); // +1 por la terminacion nula
+	if (!buffer)
+		return (NULL);
+	read_chars = read(fd, buffer, BUFFER_SIZE);  // Control de errores para read, por si da menor que 0 o 0 directamente
+	while (read_chars) // Mientras exista la linea... haz esto.
 	{
-		if (buffer[i] == c)
-			return (1);
-		i++;
+		i = 0;
+		buffer[read_chars] = '\0';
+		if (!ft_strchr(buffer, '\n'))
+			saved = ft_strjoin(saved, buffer);
+		if (ft_strchr(buffer, '\n') != 0)
+			
+		if (!ft_strchr(buffer, '\0')) // ????
+			read_chars = read(fd, buffer, BUFFER_SIZE);
 	}
-	return (0);
+	printf("Read Chars: %ld\n", read_chars); // Lee siempre un nulo al final?
+	// Checar si hay \n dentro del buffer
+		// Si hay > Retornar hasta \n
+		// Si no hay > Unir dentro de saved
+	/*if (check_string(buffer, '\n') == 0)
+	{
+		saved = ft_strjoin(saved, buffer);
+	}*/
 }
-
 char	*get_next_line(int fd)
 {
-	char		*buffer; // Static variable para ir guardando lo que lee
-	char		*final; // Lo que saldrá por output
-	static char	*temp; // Unir strings si no hay \n 
-	ssize_t		read_bytes;
-	size_t		BUFFER_SIZE = 50;
+	static char	*saved; // Para guardar lo que todavía no se ha impreso
+	char		*buffer; // Guardar los caracteres leídos por read
 	
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	buffer = ft_calloc(sizeof(char), BUFFER_SIZE + 1); // Memoria asignada porque read necesita un buffer con una dirección de memoria válida
-	if (!buffer)
-		return (NULL);
-	read_bytes = read(fd, buffer, BUFFER_SIZE);
-	while (read_bytes) 
-	{
-		buffer[read_bytes] = '\0'; // Sirve para finalizar lo leído en nulo y que pare 
-
-		// PARTIR ESTO EN OTRA FUNCIÓN
-		
-		if (!check_string(buffer, '\n'))
-		{
-			if (temp == 0) // Si temp está vacio, creala, si no, une.
-				temp = ft_strdup(buffer);
-			else
-				temp = ft_strjoin(temp, buffer); // Si no hay salto de linea, en la variable estática guardaremos lo leído hasta ese punto
-		}
-		if (check_string(buffer, '\n'))
-		{
-			temp = ft_strjoin(temp, buffer); // Dará error con el buffer grande porque no crea la str final
-			//printf("temp: %s\n", temp);
-			final = ft_substr_mod(temp, '\n');
-			return (final);
-		}
-		read_bytes = read(fd, buffer, BUFFER_SIZE); // Avanzar leyendo el fd
-	}
-	return (final);
+	saved = read_fd(fd, buffer, saved);
+	
+	return ("Hola");
 }
 
 /*Static char va a guardarse la línea leída con la 
