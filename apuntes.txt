@@ -1,0 +1,8 @@
+
+
+# Se come algunas letras del comienzo y también hay que tener cuidado con que repita partes
+# Parace que saca el salto de línea del texto original
+Trazas para controlar el flujo > Printfs como una desgracia
+	// Checar si hay \n dentro del buffer
+		// Si hay > Parar de leer
+		// Si no hay > Seguir leyendo

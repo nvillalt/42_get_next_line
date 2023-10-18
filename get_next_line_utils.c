@@ -98,7 +98,7 @@ char	*ft_substr_mod(char *s, int c)
 	substr = ft_calloc(sizeof(char), len + 1);
 	if (!substr)
 		return (NULL);
-	while (i < len)
+	while (i <= len)
 	{
 		substr[i] = s[i];
 		i++;

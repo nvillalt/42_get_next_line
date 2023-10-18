@@ -26,7 +26,7 @@ int main()
     while (i++ < 20)
     {
         final = get_next_line(fd);
-        printf("GNL: %s", final);
+        printf("GNL, Vuelta %d: %s", i, final);
         free(final);    
     } 
     return (0);

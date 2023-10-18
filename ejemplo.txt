@@ -13,5 +13,4 @@ You say the coast is clear
 But you won't catch me out
 Oh, why? This is why
 
-
-# Se come algunas letras del comienzo y también hay que tener cuidado con que repita partes
+// Explota por el control de errores de read

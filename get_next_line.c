@@ -27,51 +27,61 @@ int	check_char(char *s, int c)
 	return (0);
 }
 
-char	*read_fd(int fd, char *saved)
+char	*read_fd(int fd)
 {
 	ssize_t	read_chars;
 	char	*buffer;
+	char	*temp;
 	
+	temp = ft_calloc(sizeof(char), BUFFER_SIZE + 1);
+	if (!temp)
+		return (NULL);
 	buffer = ft_calloc(sizeof(char), BUFFER_SIZE + 1); // +1 por la terminacion nula
 	if (!buffer)
 		return (NULL);
 	read_chars = read(fd, buffer, BUFFER_SIZE);
 	/* Control de errores para read, por si da menor que 0 o 0 directamente 
 	(puedo retornar -1 en una funcion que espera char *)*/
-	printf("Saved dentro de read_fd: %s\n", saved); // ENTRA VACÍO NO SÉ POR QUÉ !!!!!!!!!!
 	while (read_chars) // Mientras exista la linea... haz esto.
 	{
-		// DA SEGFAULT PORQUE EL SAVED NO ESTÁ INICIALIZADO
 		buffer[read_chars] = '\0';
-		saved = ft_strjoin(saved, buffer); // strjoin arriba, así une en la variable estática todo antes de salirse si encuentra un
+		if (read_chars <= 0 || read_chars == -1)
+			break ;
+		temp = ft_strjoin(temp, buffer); // strjoin arriba, así une en la variable estática todo antes de salirse si encuentra un
 		if (check_char(buffer, '\n'))
 			break ;
 		read_chars = read(fd, buffer, BUFFER_SIZE);
 	}
-	return (saved);
-	// Checar si hay \n dentro del buffer
-		// Si hay > Parar de leer
-		// Si no hay > Seguir leyendo
+	return (temp);
 }
 char	*get_next_line(int fd)
 {
 	static char	*saved; // Para guardar lo que todavía no se ha impreso
-	 // Guardar los caracteres leídos por read
+	char		*temp; // Guardar los caracteres leídos por read
 	char		*final; // Devolver la línea
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	printf("SAVED ANTES DE READ_FD: %s\n", saved); // SE SOBREESCRIBE LUEGO FOR SOME REASON > Entra vacío
-	saved = ft_calloc(sizeof(char), BUFFER_SIZE + 1); // Inicializar para poder usar el join luego
-	if (!saved)
-		return (NULL);
-	saved = read_fd(fd, saved);
-	printf("Saved justo despues de read_fd: %s\n", saved);
-	final = ft_substr_mod(saved, '\n'); // Avanzar saved
-	//printf("Final: %s\n", final);
-	//printf("Saved antes de strchr: %s", saved);
-	saved = ft_strchr(saved, '\n');
-	//printf("Saved al final: %s\n", saved);
+	if (saved == 0) // Que se haga solo la primera vez.
+	{
+		saved = ft_calloc(sizeof(char), BUFFER_SIZE + 1); // Inicializar para poder usar el join luego
+		if (!saved)
+			return (NULL);
+	}
+	temp = NULL;
+	final = saved;
+	//printf("Temp antes de read_fd: %s\n", temp);
+	temp = read_fd(fd);
+	//printf("Temp después de read_fd: %s\n", temp);
+	//printf("Saved antes de strjoin: %s\n", saved);
+	saved = ft_strjoin(saved, temp);
+	//printf("Saved después strjoin: %s\n", saved);
+	//printf("Final antes de substr: %s\n", final);
+	final = ft_substr_mod(saved, '\n'); // Sacar lo que vamos a devolver
+	//printf("Final después de substr: %s\n", final);
+	saved = ft_strchr(saved, '\n'); // Avanzar la estática
+	saved++;
+	//printf("Saved al final del todo: %s\n\n\n", saved);
 	return (final);
 }
 
