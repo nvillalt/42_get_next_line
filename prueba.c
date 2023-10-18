@@ -91,9 +91,11 @@ int	check_char(char *s, int c)
 int	main()
 {
 	char	*subs;
-	char	*s1 = "Hola Hola Hola Hola Adios";
+	char	*s1 = "Hola Hola \n Adios \n Pepe";
 	char	*s2 = "";
 
-	printf("%d\n", check_char(s1, '\n'));
+	subs = ft_substr_mod(s1, '\n');
+
+	printf("%s\n", subs);
 	return (0);
 }
