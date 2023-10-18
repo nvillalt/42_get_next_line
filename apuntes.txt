@@ -6,3 +6,6 @@ Trazas para controlar el flujo > Printfs como una desgracia
 	// Checar si hay \n dentro del buffer
 		// Si hay > Parar de leer
 		// Si no hay > Seguir leyendo
+
+Hacer pruebas con buffers grandes. Con buffers pequeños de momento funciona (más o menos). Los buffers
+grandes se van de madre. 

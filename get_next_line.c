@@ -46,7 +46,7 @@ char	*read_fd(int fd)
 	{
 		buffer[read_chars] = '\0';
 		if (read_chars <= 0 || read_chars == -1)
-			break ;
+			return (0);
 		temp = ft_strjoin(temp, buffer); // strjoin arriba, así une en la variable estática todo antes de salirse si encuentra un
 		if (check_char(buffer, '\n'))
 			break ;
