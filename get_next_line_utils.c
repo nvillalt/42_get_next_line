@@ -53,6 +53,7 @@ void	*ft_calloc(size_t count, size_t size)
 	char	*tmp;
 	size_t	i;
 	
+	i = 0;
 	if (count >= __SIZE_MAX__ || size >= __SIZE_MAX__)
 		return (0);
 	tmp = malloc(count * size);

@@ -27,26 +27,25 @@ int	check_char(char *s, int c)
 	return (0);
 }
 
-char	*read_fd(int fd, char *buffer, char *saved)
+char	*read_fd(int fd, char *saved)
 {
 	ssize_t	read_chars;
+	char	*buffer;
 	
 	buffer = ft_calloc(sizeof(char), BUFFER_SIZE + 1); // +1 por la terminacion nula
 	if (!buffer)
 		return (NULL);
 	read_chars = read(fd, buffer, BUFFER_SIZE);
-	//printf("Buffer: %s\nChars: %ld\n", buffer, read_chars);
 	/* Control de errores para read, por si da menor que 0 o 0 directamente 
 	(puedo retornar -1 en una funcion que espera char *)*/
+	printf("Saved dentro de read_fd: %s\n", saved); // ENTRA VACÍO NO SÉ POR QUÉ !!!!!!!!!!
 	while (read_chars) // Mientras exista la linea... haz esto.
 	{
 		// DA SEGFAULT PORQUE EL SAVED NO ESTÁ INICIALIZADO
 		buffer[read_chars] = '\0';
+		saved = ft_strjoin(saved, buffer); // strjoin arriba, así une en la variable estática todo antes de salirse si encuentra un
 		if (check_char(buffer, '\n'))
-		{	saved = ft_strjoin(saved, buffer); // Encuentra el caracter en medio, lo mete en saved y se sale antes de llegar a guardarlo
 			break ;
-		}
-		saved = ft_strjoin(saved, buffer);
 		read_chars = read(fd, buffer, BUFFER_SIZE);
 	}
 	return (saved);
@@ -57,14 +56,17 @@ char	*read_fd(int fd, char *buffer, char *saved)
 char	*get_next_line(int fd)
 {
 	static char	*saved; // Para guardar lo que todavía no se ha impreso
-	char		*buffer; // Guardar los caracteres leídos por read
+	 // Guardar los caracteres leídos por read
 	char		*final; // Devolver la línea
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
+	printf("SAVED ANTES DE READ_FD: %s\n", saved); // SE SOBREESCRIBE LUEGO FOR SOME REASON > Entra vacío
 	saved = ft_calloc(sizeof(char), BUFFER_SIZE + 1); // Inicializar para poder usar el join luego
-	saved = read_fd(fd, buffer, saved);
-	//printf("Saved justo despues de read_fd: %s\n", saved);
+	if (!saved)
+		return (NULL);
+	saved = read_fd(fd, saved);
+	printf("Saved justo despues de read_fd: %s\n", saved);
 	final = ft_substr_mod(saved, '\n'); // Avanzar saved
 	//printf("Final: %s\n", final);
 	//printf("Saved antes de strchr: %s", saved);
