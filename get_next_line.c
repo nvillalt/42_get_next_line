@@ -3,92 +3,105 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nvillalt <nvillalt@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: nvillalt <nvillalt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/14 10:32:55 by nvillalt          #+#    #+#             */
-/*   Updated: 2023/10/17 15:33:22 by nvillalt         ###   ########.fr       */
+/*   Created: 2023/10/23 09:10:25 by nvillalt          #+#    #+#             */
+/*   Updated: 2023/10/26 19:26:49 by nvillalt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
 #include <stdio.h>
+#include "get_next_line.h"
 
-int	check_char(char *s, int c)
+char	*ft_free_saved(char *saved)
 {
-	int i;
+	char	*aux;
+	int		len;
 
-	i = 0;
-	while (s[i] != '\0')
-	{
-		if (s[i] == c)
-			return (1);
-		i++;
-	}
-	return (0);
+	len = 0;
+	while (saved[len] != '\0' && saved[len] != '\n')
+		len++;
+	if (saved[len] == '\n')
+		len++;
+	aux = ft_strdup(saved + len);
+	free(saved);
+	if (!aux)
+		return (NULL);
+	return (aux);
 }
 
-char	*read_fd(int fd, char * temp)
+char	*ft_get_returned_line(char *saved)
 {
+	char	*final;
+	int		len;
+
+	len = 0;
+	if (!saved || saved[len] == '\0')
+		return (NULL);
+	while (saved[len] != '\0' && saved[len] != '\n')
+		len++;
+	if (saved[len] ==  '\n')
+		len++;
+	final = ft_calloc(sizeof(char), len + 1); 	
+	if (!final)
+		return (NULL);
+	len = 0;
+	while (saved[len] != '\n' && saved[len] != '\0')
+	{
+		final[len] = saved[len];
+		len++;
+	}
+	if (saved[len] == '\n')
+		final[len] = saved[len];
+	return (final);
+}
+
+char	*ft_read_fd(int fd, char *saved)
+{
+	char	*buffer; 
 	ssize_t	read_chars;
-	char	*buffer;
 
 	buffer = ft_calloc(sizeof(char), BUFFER_SIZE + 1);
 	if (!buffer)
 		return (NULL);
-	read_chars = read(fd, buffer, BUFFER_SIZE);
-	while (read_chars)
+	read_chars = 1;
+	while (read_chars > 0 && !ft_check_char(buffer, '\n'))
 	{
+		read_chars = read(fd, buffer, BUFFER_SIZE);
 		if (read_chars == -1)
 		{
 			free(buffer);
+			free(saved);
+			saved = 0;
 			return (NULL);
 		}
 		buffer[read_chars] = '\0';
-		temp = ft_strjoin(temp, buffer);
-		if (check_char(buffer, '\n'))
-			break ;
-		read_chars = read(fd, buffer, BUFFER_SIZE);
+		saved = ft_strjoin(saved, buffer);
 	}
 	free(buffer);
-	return (temp);
+	return (saved);
 }
+
 char	*get_next_line(int fd)
 {
-	static char	*saved; // Para guardar lo que todavía no se ha impreso
-	char		*temp; // Guardar los caracteres leídos por read
-	char		*final; // Devolver la línea
+	static char	*saved;
+	char		*final;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (free(saved), NULL);
+	saved = ft_read_fd(fd, saved);
+	if (!saved)
 		return (NULL);
-	if (saved == 0)
+	final = ft_get_returned_line(saved);
+	if (!final)
 	{
-		saved = ft_calloc(sizeof(char), BUFFER_SIZE + 1); // Inicializar para poder usar el join luego
-		if (!saved)
+		if (saved)
+		{
+			free(saved);
+			saved = 0;
 			return (NULL);
+		}
 	}
-	temp = ft_calloc(sizeof(char), BUFFER_SIZE + 1);
-	if (!temp)
-		return (NULL);
-	final = temp;
-	temp = read_fd(fd, temp);
-	//printf("Temp después de read_fd: %s\n", temp);
-	//printf("Saved antes de join: %s\n", saved);
-	saved = ft_strjoin(saved, temp);
-	//printf("Saved después de join: %s\n", saved);
-	//printf("Final antes de mod: %s\n", final);
-	final = ft_substr_mod(saved, '\n');
-	//printf("Final despues de mod: %s\n", final);
-	//printf("Saved antes de strchr: %s\n", saved);
-	saved = ft_strchr(saved, '\n');
-	saved++;
-	//printf("Saved después de avanzar la estática: %s\n", saved);
+	saved = ft_free_saved(saved);
 	return (final);
 }
-
-/*Static char va a guardarse la línea leída con la 
-cantidad BUFFER_SIZE hasta que acabe el programa.
-GNL lee la cantidad buffer_size de un archivo hasta
-llegar a \n o \0. Si no hay ninguno de los dos dentro
-de la línea, lee otra vez la cantidad de BUFFER_SIZE
-hasta que una de las dos condiciones se cumpla. Imprime
-la linea hasta \n o \0 */

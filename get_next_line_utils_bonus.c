@@ -1,17 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nvillalt <nvillalt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/23 09:36:41 by nvillalt          #+#    #+#             */
-/*   Updated: 2023/10/26 11:34:07 by nvillalt         ###   ########.fr       */
+/*   Created: 2023/10/26 15:50:25 by nvillalt          #+#    #+#             */
+/*   Updated: 2023/10/26 18:31:13 by nvillalt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
 
 void	*ft_calloc(size_t count, size_t size)
 {

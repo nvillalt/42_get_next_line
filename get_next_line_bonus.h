@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nvillalt <nvillalt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/23 09:11:45 by nvillalt          #+#    #+#             */
-/*   Updated: 2023/10/26 17:07:30 by nvillalt         ###   ########.fr       */
+/*   Created: 2023/10/26 15:50:38 by nvillalt          #+#    #+#             */
+/*   Updated: 2023/10/26 17:25:01 by nvillalt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,11 @@
 # define GET_NEXT_LINE_H
 
 #ifndef BUFFER_SIZE
-# define BUFFER_SIZE 1
+# define BUFFER_SIZE 42
+#endif
+
+#ifndef	FD_MAX
+# define FD_MAX 1024
 #endif
 
 # include <unistd.h>
@@ -30,6 +34,6 @@ char	*ft_strjoin(char *s1, char *s2);
 char	*ft_strdup(char *src);
 //char	*ft_strchr(char *str, int c);
 size_t	ft_strlen(char *str);
-int	ft_check_char(char *str, int c);
+int		ft_check_char(char *str, int c);
 
 #endif
