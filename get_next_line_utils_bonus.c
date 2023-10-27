@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nvillalt <nvillalt@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nvillalt <nvillalt@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 15:50:25 by nvillalt          #+#    #+#             */
-/*   Updated: 2023/10/26 18:31:13 by nvillalt         ###   ########.fr       */
+/*   Updated: 2023/10/27 13:50:23 by nvillalt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 void	*ft_calloc(size_t count, size_t size)
 {
@@ -84,7 +84,7 @@ char	*ft_strjoin(char *saved, char *buffer)
 	j = 0;
 	join = ft_calloc(sizeof(char), ft_strlen(saved) + ft_strlen(buffer) + 1);
 	if (!join)
-		return (free(saved), NULL);
+		return (free(saved) , NULL);
 	while (saved && saved[i] != '\0')
 	{
 		join[i] = saved[i];

@@ -3,37 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nvillalt <nvillalt@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nvillalt <nvillalt@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/26 15:45:23 by nvillalt          #+#    #+#             */
-/*   Updated: 2023/10/26 19:32:48 by nvillalt         ###   ########.fr       */
+/*   Created: 2023/10/27 13:06:05 by nvillalt          #+#    #+#             */
+/*   Updated: 2023/10/27 13:48:06 by nvillalt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
+#include <stdio.h>
 
-char	*ft_free_saved(int fd, char *saved[fd])
+char	*ft_free_saved(int fd, char **saved)
 {
 	char	*aux;
-	size_t	len;
+	int		len;
 
 	len = 0;
-	while (saved[fd][len] != '\n' && saved[fd][len])
+	while (saved[fd][len] != '\0' && saved[fd][len] != '\n')
 		len++;
 	if (saved[fd][len] == '\n')
 		len++;
 	aux = ft_strdup(saved[fd] + len);
+	//printf("SAVED CON PUNTERO MOVIDO: %s\n", saved[fd] + len);
 	free(saved[fd]);
 	if (!aux)
 		return (NULL);
-	return (aux); 
+	return (aux);
 }
 
-char	*ft_get_returned_line(int fd, char *saved[fd])
+char	*ft_get_returned_line(int fd, char **saved)
 {
-	char	*result;
-	size_t		len;
-	
+	char	*final;
+	int		len;
+
 	len = 0;
 	if (!saved[fd] || saved[fd][len] == '\0')
 		return (NULL);
@@ -41,29 +43,29 @@ char	*ft_get_returned_line(int fd, char *saved[fd])
 		len++;
 	if (saved[fd][len] == '\n')
 		len++;
-	result = ft_calloc(sizeof(char), len + 1);
-	if (!result)
+	final = ft_calloc(sizeof(char), len + 1);
+	if (!final)
 		return (NULL);
 	len = 0;
 	while (saved[fd][len] != '\0' && saved[fd][len] != '\n')
 	{
-		result[len] = saved[fd][len];
+		final[len] = saved[fd][len];
 		len++;
 	}
 	if (saved[fd][len] == '\n')
-		result[len] = saved[fd][len];
-	return (result);
+		final[len] = saved[fd][len];
+	return (final);
 }
 
-char	*read_fd(int fd, char *saved[fd])
+char	*ft_read_fd(int fd, char **saved)
 {
 	char	*buffer;
 	ssize_t	read_chars;
 
-	read_chars = 1;
 	buffer = ft_calloc(sizeof(char), BUFFER_SIZE + 1);
 	if (!buffer)
 		return (NULL);
+	read_chars = 1;
 	while (read_chars > 0 && !ft_check_char(buffer, '\n'))
 	{
 		read_chars = read(fd, buffer, BUFFER_SIZE);
@@ -71,7 +73,7 @@ char	*read_fd(int fd, char *saved[fd])
 		{
 			free(buffer);
 			free(saved[fd]);
-			saved[fd] = 0;
+			saved[fd] = NULL;
 			return (NULL);
 		}
 		buffer[read_chars] = '\0';
@@ -86,21 +88,22 @@ char	*get_next_line(int fd)
 	static char	*saved[FD_MAX];
 	char		*final;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (NULL);
-	saved[fd] = read_fd(fd, &saved[fd]);
+	if (fd < 0 || BUFFER_SIZE <= 0 || fd > FD_MAX)
+		return (free(saved[fd]), NULL);
+	saved[fd] = ft_read_fd(fd, saved);
 	if (!saved[fd])
 		return (NULL);
-	final = ft_get_returned_line(fd, &saved[fd]);
+	final = ft_get_returned_line(fd, saved);
 	if (!final)
 	{
-		if (saved[fd])
-		{
+ 		if (saved[fd])
+		{ 
 			free(saved[fd]);
-			saved[fd] = 0;
+			saved[fd] = NULL;
 			return (NULL);
 		}
 	}
-	saved[fd] = ft_free_saved(fd, &saved[fd]);
+	saved[fd] = ft_free_saved(fd, saved);
+	//printf("Final: %s\n", final);
 	return (final);
 }
