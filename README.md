@@ -17,3 +17,5 @@ In order to properly develop and write this project, it is extremely important t
 - This function reads data previously written to a file, stores whatever was read in a void *variable which acts as a buffer and returns the amount of characters read from the file. If the return value is 0, it means the EOF has been reached. If the return value is -1, it means an error was encountered.
 
 The main challenge of this project's implementation is memory management: not a single memory leak is allowed. In order to test this, it is useful to run the program with the ``-fsanitize=address -g3`` flag. Any segfaults or leaks will be tracked more easily thanks to it. Additionally, it is useful to use the system leaks command or valgrind, again, to help us track any possible leak down. Moreover, the usage of ``malloc()`` and ``ft_calloc()`` should always be implemented along with a ``free()`` call.
+
+ADD THE TESTING BIT
