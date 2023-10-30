@@ -6,7 +6,7 @@
 /*   By: nvillalt <nvillalt@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 13:06:05 by nvillalt          #+#    #+#             */
-/*   Updated: 2023/10/27 13:48:06 by nvillalt         ###   ########.fr       */
+/*   Updated: 2023/10/30 16:46:48 by nvillalt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,5 @@ char	*get_next_line(int fd)
 		}
 	}
 	saved[fd] = ft_free_saved(fd, saved);
-	//printf("Final: %s\n", final);
 	return (final);
 }

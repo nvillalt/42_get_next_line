@@ -6,7 +6,7 @@
 /*   By: nvillalt <nvillalt@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 10:10:08 by nvillalt          #+#    #+#             */
-/*   Updated: 2023/10/27 13:39:23 by nvillalt         ###   ########.fr       */
+/*   Updated: 2023/10/30 16:43:17 by nvillalt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,11 @@ int	main()
 	//fd2 = open("ejemplo3", O_RDONLY);
 	//fd = open("ejemplo4.txt", O_RDONLY);
 	//fd = open("el_quijote.txt", O_RDONLY);
-	line = get_next_line(fd);
 	//str = get_next_line(fd2);
 	while (i < 4)
 	{
-		printf("GNL, Vuelta %i: %s", i, line);
 		line = get_next_line(fd);
+		printf("GNL, Vuelta %i: %s", i, line);
 		if (line)
 			free(line);
 		//str = get_next_line(fd2);
