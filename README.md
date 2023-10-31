@@ -18,4 +18,7 @@ In order to properly develop and write this project, it is extremely important t
 
 The main challenge of this project's implementation is memory management: not a single memory leak is allowed. In order to test this, it is useful to run the program with the ``-fsanitize=address -g3`` flag. Any segfaults or leaks will be tracked more easily thanks to it. Additionally, it is useful to use the system leaks command or valgrind, again, to help us track any possible leak down. Moreover, the usage of ``malloc()`` and ``ft_calloc()`` should always be implemented along with a ``free()`` call.
 
-ADD THE TESTING BIT
+### **Testing**
+The  ``tests`` folder includes a couple of .txt files which can be used as tests, as well as three mains to test with standard input, mandatory function and bonus function. 
+
+Enjoy!
